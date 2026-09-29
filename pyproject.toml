@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "minuteguard"
+version = "1.0.0"
+description = "Auditeur de comptes rendus fondé sur des preuves et piloté par prompts"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "DAT32-91 project team" }]
+dependencies = [
+  "openai>=2.0,<3",
+  "pydantic>=2.8,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "mypy>=1.11,<2",
+  "pytest>=8.3,<9",
+  "pytest-cov>=5,<6",
+  "ruff>=0.8,<1",
+]
+
+[project.scripts]
+minuteguard = "minuteguard.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/minuteguard"]
+
+[tool.pytest.ini_options]
+addopts = "-q --strict-markers"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+packages = ["minuteguard"]
+

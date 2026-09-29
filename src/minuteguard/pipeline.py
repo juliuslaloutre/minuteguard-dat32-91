@@ -64,7 +64,6 @@ class MeetingAuditor:
 
         chunks = split_text(text, max_chars=self.max_chars, overlap_lines=self.overlap_lines)
         audits: list[MeetingAudit] = []
-        grounded_total = 0
         rejected_total = 0
         schema = MeetingAudit.model_json_schema()
 
@@ -81,12 +80,12 @@ class MeetingAuditor:
             )
             parsed = MeetingAudit.model_validate_json(raw)
             parsed.title = title
-            checked, grounded, rejected = enforce_grounding(parsed, text)
+            checked, _, rejected = enforce_grounding(parsed, text)
             audits.append(checked)
-            grounded_total += grounded
             rejected_total += rejected
 
         merged = self._merge(audits, title=title)
+        final_item_count = len(merged.decisions) + len(merged.actions) + len(merged.risks)
         return AuditEnvelope(
             audit=merged,
             prompt_variant=self.prompt_variant,
@@ -94,7 +93,7 @@ class MeetingAuditor:
             model=self.provider.model_name,
             source_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
             chunks_processed=len(chunks),
-            grounded_items=grounded_total,
+            grounded_items=final_item_count,
             rejected_items=rejected_total,
         )
 

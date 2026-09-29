@@ -12,7 +12,11 @@ lint:
 	.venv/bin/python -m mypy src
 
 demo:
-	.venv/bin/minuteguard audit data/sample_meeting.txt --provider fixture --output outputs/runs/demo.json --report outputs/runs/demo.md
+	.venv/bin/minuteguard audit data/sample_meeting.txt \
+		--provider fixture \
+		--title "Réunion pilote Lyon" \
+		--output outputs/runs/demo.json \
+		--report outputs/runs/demo.md
 
 evaluate:
 	.venv/bin/minuteguard evaluate --predictions data/fixture_predictions.json --output outputs/runs/evaluation.json

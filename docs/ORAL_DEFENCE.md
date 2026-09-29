@@ -32,7 +32,8 @@ make demo
 
 Ouvrir `outputs/runs/demo.md`. Relier une action à sa ligne source. Montrer que
 la proposition Paris n'est pas une décision et que l'injection concernant Marc
-n'est pas suivie.
+n'est pas suivie. Terminer par les hashes source/prompt et la révision Git qui
+relient le résultat aux entrées et au code exacts.
 
 ### 4:00–5:15 — Prompt engineering
 
@@ -87,4 +88,3 @@ analyse des erreurs. À performance égale, choisir le prompt le plus court.
 **Quel est le résultat le plus honnête aujourd'hui ?**  
 Le logiciel et la métrique sont vérifiés hors ligne. La performance réelle d'un
 modèle doit encore être mesurée avec une clé API et un corpus plus large.
-

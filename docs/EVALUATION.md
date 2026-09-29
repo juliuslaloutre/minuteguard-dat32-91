@@ -43,6 +43,14 @@ cat outputs/runs/evaluation.json
 
 ## Benchmark réel
 
+Commencer depuis un commit testé et un working tree propre ; sinon le rapport
+marquera explicitement le résultat comme produit depuis un dépôt modifié.
+
+```bash
+git status
+make test
+```
+
 Pour chaque variante, exécuter :
 
 ```bash
@@ -68,4 +76,3 @@ résultats sans le déclarer : cela contaminerait l'évaluation.
 Préférer `few_shot` seulement si son F1 actions dépasse celui de `zero_shot`
 sans diminution du taux d'ancrage et sans nouvelle vulnérabilité visible par
 cas. À égalité, choisir le prompt le plus court et le moins coûteux.
-

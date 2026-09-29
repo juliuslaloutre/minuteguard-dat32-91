@@ -64,7 +64,11 @@ passage de consolidation.
 - dépendances bornées dans `pyproject.toml` ;
 - modèle configurable par `--model` ou `MINUTEGUARD_MODEL` ;
 - température fixée à 0 pour limiter, sans supprimer, la variabilité ;
-- hash SHA-256 de la source dans chaque enveloppe ;
+- hash SHA-256 de la source et du transcript exact des prompts ;
+- commit Git et indicateur d'état propre/modifié quand Git est disponible ;
 - fixtures, jeu d'évaluation et prompts versionnés ;
 - aucune clé ni sortie d'exécution locale versionnée.
 
+Un résultat marqué `git_dirty=true` reste analysable, mais n'est pas pleinement
+reproductible puisque les changements locaux ne sont pas identifiés par le hash
+du commit. Les benchmarks de rendu doivent partir d'un working tree propre.

@@ -4,7 +4,7 @@
 
 | Critère | Preuve dans le dépôt | Démonstration |
 |---|---|---|
-| dépôt Git exécutable | `README.md`, `pyproject.toml`, `Makefile` | `make install && make test && make demo` |
+| dépôt Git exécutable | `README.md`, `pyproject.toml`, `Makefile`, CI | `make install && make test && make demo` |
 | historique Git | commits atomiques + branche fusionnée | `git log --graph --all` |
 | application pilotée par prompt | `prompts/`, `pipeline.py`, `cli.py` | `minuteguard audit ...` |
 | design des prompts | trois variantes + `PROMPT_DESIGN.md` | comparer fichiers et scores |
@@ -28,6 +28,9 @@
 | 10 | API Python, réponse, retry 429 | `providers.py`, `tests/test_provider.py` |
 | 11 | quatre modes d'échec | `failure-lab`, `FAILURE_MODES.md`, tests adversariaux |
 
+Chaque audit ajoute une preuve de provenance : hash de la source, hash du prompt
+effectif, modèle, variante, commit Git et état propre/modifié du dépôt.
+
 ## Éléments qui ne doivent pas être sur-vendus
 
 - Le score parfait de la fixture ne prouve pas la qualité d'un modèle.
@@ -37,4 +40,3 @@
 
 Cette transparence renforce la défense : elle distingue clairement ce qui est
 implémenté, ce qui est testé et ce qui reste à produire avec l'équipe.
-

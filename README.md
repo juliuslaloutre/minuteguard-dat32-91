@@ -57,6 +57,7 @@ make test       # tests unitaires et couverture
 make lint       # Ruff + mypy strict
 make demo       # démonstration locale reproductible
 make evaluate   # score les prédictions d'exemple
+make git-check  # liste les preuves Git prêtes et les actions humaines restantes
 
 .venv/bin/minuteguard prompts
 .venv/bin/minuteguard failure-lab
@@ -70,7 +71,7 @@ make evaluate   # score les prédictions d'exemple
 ├── data/                 exemples, jeu d'évaluation et fixtures
 ├── docs/                 architecture, prompts, évaluation, soutenance
 ├── notebooks/            protocole expérimental reproductible
-├── outputs/              résultats de référence et exécutions ignorées
+├── outputs/              résultats régénérables, ignorés par Git
 ├── prompts/              versions zero-shot, few-shot et délibérative
 ├── src/minuteguard/      application Python
 └── tests/                tests unitaires et adversariaux
@@ -97,6 +98,8 @@ extraction bornée, auditable et à faible risque.
 ## Reproductibilité et limites
 
 - Le fournisseur `fixture` garantit une démo locale déterministe.
+- Chaque sortie trace les SHA-256 de la source et du prompt effectif, ainsi que
+  le commit Git et l'état propre/modifié du dépôt quand Git est disponible.
 - Le fournisseur `openai` nécessite une clé, un accès réseau et peut avoir un coût.
 - Une sortie valide au niveau du schéma peut rester fausse au niveau sémantique.
 - Les citations sont contrôlées, mais les synonymes employés dans les champs
@@ -114,5 +117,6 @@ La matrice complète entre le syllabus et les preuves du dépôt se trouve dans
 - [`docs/FAILURE_MODES.md`](docs/FAILURE_MODES.md) — démonstrations adversariales ;
 - [`docs/ORAL_DEFENCE.md`](docs/ORAL_DEFENCE.md) — déroulé de la présentation ;
 - [`docs/GIT_WORKFLOW.md`](docs/GIT_WORKFLOW.md) — branches, PR, revue et conflits ;
+- [`docs/GIT_EXERCISE_CHECKLIST.md`](docs/GIT_EXERCISE_CHECKLIST.md) — exercices à réaliser réellement ;
 - [`docs/ETHICS_AND_LIMITS.md`](docs/ETHICS_AND_LIMITS.md) — usage responsable ;
 - [`docs/REFERENCES.md`](docs/REFERENCES.md) — documentation technique officielle.

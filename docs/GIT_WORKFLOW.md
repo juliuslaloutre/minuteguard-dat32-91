@@ -16,6 +16,19 @@ git show --stat 25b786f
 
 ## Cycle recommandé pour une vraie contribution
 
+Pour la première publication, configurer votre identité et le remote sans
+réécrire les commits existants :
+
+```bash
+git config --local user.name "Votre nom"
+git config --local user.email "votre-email@example.com"
+git remote add origin <URL_HTTPS_DU_DEPOT>
+git remote -v
+git push -u origin main
+```
+
+Puis, pour chaque contribution :
+
 ```bash
 git switch main
 git pull --ff-only
@@ -58,3 +71,13 @@ actuel.
 
 Chaque commit doit rester exécutable et ne contenir ni clé ni sortie locale.
 
+Après approbation du rendu final, un tag annoté peut identifier exactement la
+version présentée :
+
+```bash
+git tag -a submission-v1 -m "DAT32-91 final submission"
+git push origin submission-v1
+```
+
+La CI `.github/workflows/ci.yml` exécute tests, couverture, lint et typage sur
+Python 3.11 et 3.13 à chaque pull request et push sur `main`.

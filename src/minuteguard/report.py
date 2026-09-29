@@ -13,6 +13,11 @@ def _safe(text: str | None) -> str:
 
 def render_markdown(envelope: AuditEnvelope) -> str:
     audit = envelope.audit
+    git_revision = envelope.git_commit or "indisponible"
+    if envelope.git_dirty is None:
+        git_state = "inconnu"
+    else:
+        git_state = "modifié" if envelope.git_dirty else "propre"
     lines = [
         f"# Audit — {audit.title}",
         "",
@@ -83,6 +88,8 @@ def render_markdown(envelope: AuditEnvelope) -> str:
             f"- Éléments ancrés : {envelope.grounded_items}",
             f"- Éléments rejetés : {envelope.rejected_items}",
             f"- SHA-256 source : `{envelope.source_sha256}`",
+            f"- SHA-256 prompt effectif : `{envelope.prompt_sha256}`",
+            f"- Révision Git : `{git_revision}` (dépôt {git_state})",
             "",
             "> Ce rapport assiste la revue humaine ; il ne la remplace pas.",
             "",

@@ -65,6 +65,11 @@ def _run_audit(args: argparse.Namespace) -> int:
         f"Contrôle des preuves : {envelope.grounded_items} ancrée(s), "
         f"{envelope.rejected_items} rejetée(s)."
     )
+    if envelope.git_dirty is True:
+        print(
+            "Avertissement de traçabilité : le dépôt contient des changements non commités ; "
+            "ce résultat n'est pas entièrement reproductible."
+        )
     return 0
 
 

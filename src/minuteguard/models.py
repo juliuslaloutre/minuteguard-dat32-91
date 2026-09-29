@@ -74,9 +74,14 @@ class AuditEnvelope(StrictModel):
 
     audit: MeetingAudit
     prompt_variant: str
+    prompt_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     provider: str
     model: str
     source_sha256: str
+    git_commit: str | None = Field(
+        default=None, pattern=r"^(?:[0-9a-f]{40}|[0-9a-f]{64})$"
+    )
+    git_dirty: bool | None = None
     chunks_processed: int = Field(ge=1)
     grounded_items: int = Field(ge=0)
     rejected_items: int = Field(ge=0)

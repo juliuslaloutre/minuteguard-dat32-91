@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import hashlib
 import re
+import subprocess
+from pathlib import Path
 from typing import TypeVar
 
 from minuteguard.chunking import split_text
@@ -13,6 +15,66 @@ from minuteguard.prompts import PromptRepository, number_lines
 from minuteguard.providers import TextProvider
 
 ItemT = TypeVar("ItemT")
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _prompt_sha256(prompt_messages: list[tuple[str, str]]) -> str:
+    """Hash the exact ordered system/user messages sent for every chunk."""
+
+    digest = hashlib.sha256()
+    digest.update(b"minuteguard-prompt-transcript-v1\0")
+    for system_prompt, user_prompt in prompt_messages:
+        digest.update(b"bundle\0")
+        for role, content in ((b"system", system_prompt), (b"user", user_prompt)):
+            encoded = content.encode("utf-8")
+            digest.update(role)
+            digest.update(b"\0")
+            digest.update(len(encoded).to_bytes(8, byteorder="big"))
+            digest.update(encoded)
+    return digest.hexdigest()
+
+
+def _git_metadata(repo_root: Path | None = None) -> tuple[str | None, bool | None]:
+    """Return the current revision and dirty state, or null metadata without Git."""
+
+    root = repo_root or PROJECT_ROOT
+    try:
+        revision = subprocess.run(
+            ["git", "-C", str(root), "rev-parse", "--verify", "HEAD"],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5.0,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None, None
+
+    commit = revision.stdout.strip().lower()
+    if revision.returncode != 0 or not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", commit):
+        return None, None
+
+    try:
+        status = subprocess.run(
+            [
+                "git",
+                "--no-optional-locks",
+                "-C",
+                str(root),
+                "status",
+                "--porcelain=v1",
+                "--untracked-files=normal",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=5.0,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return commit, None
+
+    if status.returncode != 0:
+        return commit, None
+    return commit, bool(status.stdout.strip())
 
 
 def _dedupe_key(text: str) -> str:
@@ -62,8 +124,10 @@ class MeetingAuditor:
         if not text.strip():
             raise ValueError("The meeting text cannot be empty")
 
+        git_commit, git_dirty = _git_metadata()
         chunks = split_text(text, max_chars=self.max_chars, overlap_lines=self.overlap_lines)
         audits: list[MeetingAudit] = []
+        prompt_messages: list[tuple[str, str]] = []
         rejected_total = 0
         schema = MeetingAudit.model_json_schema()
 
@@ -73,6 +137,7 @@ class MeetingAuditor:
                 title=title,
                 numbered_source=number_lines(chunk.text, first_line=chunk.first_line),
             )
+            prompt_messages.append((bundle.system, bundle.user))
             raw = self.provider.complete(
                 system_prompt=bundle.system,
                 user_prompt=bundle.user,
@@ -89,9 +154,12 @@ class MeetingAuditor:
         return AuditEnvelope(
             audit=merged,
             prompt_variant=self.prompt_variant,
+            prompt_sha256=_prompt_sha256(prompt_messages),
             provider=self.provider.provider_name,
             model=self.provider.model_name,
             source_sha256=hashlib.sha256(text.encode("utf-8")).hexdigest(),
+            git_commit=git_commit,
+            git_dirty=git_dirty,
             chunks_processed=len(chunks),
             grounded_items=final_item_count,
             rejected_items=rejected_total,

@@ -27,7 +27,10 @@ def test_cli_demo_report_prompts_and_failure_lab(tmp_path: Path, capsys: Any) ->
 
     assert exit_code == 0
     assert json.loads(output.read_text(encoding="utf-8"))["grounded_items"] == 6
-    assert "Traçabilité technique" in report.read_text(encoding="utf-8")
+    rendered_report = report.read_text(encoding="utf-8")
+    assert "Traçabilité technique" in rendered_report
+    assert "SHA-256 prompt effectif" in rendered_report
+    assert "Révision Git" in rendered_report
 
     assert main(["prompts"]) == 0
     assert "few_shot" in capsys.readouterr().out
@@ -88,4 +91,3 @@ def test_cli_reports_missing_api_key(monkeypatch: Any, capsys: Any) -> None:
 
     assert exit_code == 2
     assert "OPENAI_API_KEY is missing" in capsys.readouterr().err
-

@@ -1,4 +1,4 @@
-.PHONY: install test lint demo evaluate
+.PHONY: install test lint demo evaluate git-check
 
 install:
 	python3 -m venv .venv
@@ -20,3 +20,6 @@ demo:
 
 evaluate:
 	.venv/bin/minuteguard evaluate --predictions data/fixture_predictions.json --output outputs/runs/evaluation.json
+
+git-check:
+	bash scripts/git_readiness.sh

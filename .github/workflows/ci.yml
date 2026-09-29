@@ -11,7 +11,9 @@ permissions:
 jobs:
   quality:
     name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
+    # Pin the image so a future ubuntu-latest migration cannot change the
+    # execution environment immediately before the course submission.
+    runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
@@ -38,4 +40,3 @@ jobs:
 
       - name: Run mypy
         run: python -m mypy src
-

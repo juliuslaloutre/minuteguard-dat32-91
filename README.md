@@ -87,10 +87,12 @@ make evaluate   # score les prédictions d'exemple
 ## Ce que MinuteGuard est — et n'est pas
 
 MinuteGuard est une **application pilotée par prompt** : un pipeline Python
-orchestre un LLM, valide sa sortie et produit un rapport. Ce n'est pas un LLM
-(le modèle génératif lui-même), ni un système agentique autonome : aucune
-boucle ne choisit librement des outils ou des objectifs. Cette architecture
-plus simple est adaptée à une extraction bornée, auditable et à faible risque.
+orchestre un LLM, valide sa sortie et produit un rapport. Un **LLM** est le
+modèle qui prédit les tokens ; un **agent conversationnel** ajoute une boucle de
+dialogue et un état ; un **système agentique** planifie des étapes et choisit des
+outils pour atteindre un objectif. MinuteGuard n'est ni conversationnel ni
+agentique : son flux est fixe. Cette architecture plus simple est adaptée à une
+extraction bornée, auditable et à faible risque.
 
 ## Reproductibilité et limites
 
@@ -104,3 +106,13 @@ plus simple est adaptée à une extraction bornée, auditable et à faible risqu
 La matrice complète entre le syllabus et les preuves du dépôt se trouve dans
 [`docs/RUBRIC_TRACEABILITY.md`](docs/RUBRIC_TRACEABILITY.md).
 
+## Documentation de soutenance
+
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — composants et frontières de confiance ;
+- [`docs/PROMPT_DESIGN.md`](docs/PROMPT_DESIGN.md) — techniques et compromis ;
+- [`docs/EVALUATION.md`](docs/EVALUATION.md) — protocole et métriques ;
+- [`docs/FAILURE_MODES.md`](docs/FAILURE_MODES.md) — démonstrations adversariales ;
+- [`docs/ORAL_DEFENCE.md`](docs/ORAL_DEFENCE.md) — déroulé de la présentation ;
+- [`docs/GIT_WORKFLOW.md`](docs/GIT_WORKFLOW.md) — branches, PR, revue et conflits ;
+- [`docs/ETHICS_AND_LIMITS.md`](docs/ETHICS_AND_LIMITS.md) — usage responsable ;
+- [`docs/REFERENCES.md`](docs/REFERENCES.md) — documentation technique officielle.

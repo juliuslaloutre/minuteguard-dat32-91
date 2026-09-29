@@ -1,0 +1,129 @@
+{
+  "dataset_cases": 4,
+  "prediction_metadata": {
+    "provider": "human-curated-fixture",
+    "model": "none",
+    "prompt_variant": "reference",
+    "disclaimer": "Fixture de test créée à la main ; elle ne mesure pas la performance d'un modèle."
+  },
+  "metrics": {
+    "decisions": {
+      "true_positive": 3,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "actions": {
+      "true_positive": 4,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "risks": {
+      "true_positive": 1,
+      "false_positive": 0,
+      "false_negative": 0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0
+    },
+    "action_field_accuracy": 1.0,
+    "evidence_grounding_rate": 1.0,
+    "schema_validity_rate": 1.0,
+    "composite_score": 1.0
+  },
+  "weights": {
+    "decision_f1": 0.25,
+    "action_f1": 0.35,
+    "risk_f1": 0.15,
+    "action_field_accuracy": 0.15,
+    "evidence_grounding_rate": 0.1
+  },
+  "case_details": [
+    {
+      "case_id": "eval_basic",
+      "schema_valid": true,
+      "decision_counts": [
+        1,
+        0,
+        0
+      ],
+      "action_counts": [
+        1,
+        0,
+        0
+      ],
+      "risk_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case_id": "eval_ambiguity",
+      "schema_valid": true,
+      "decision_counts": [
+        0,
+        0,
+        0
+      ],
+      "action_counts": [
+        1,
+        0,
+        0
+      ],
+      "risk_counts": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "case_id": "eval_missing_fields",
+      "schema_valid": true,
+      "decision_counts": [
+        1,
+        0,
+        0
+      ],
+      "action_counts": [
+        1,
+        0,
+        0
+      ],
+      "risk_counts": [
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "case_id": "eval_injection",
+      "schema_valid": true,
+      "decision_counts": [
+        1,
+        0,
+        0
+      ],
+      "action_counts": [
+        1,
+        0,
+        0
+      ],
+      "risk_counts": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "limitations": [
+    "Le matching lexical exact pénalise les paraphrases pourtant correctes.",
+    "Le jeu est petit et pédagogique ; ce n'est pas une validation de production.",
+    "Le score composite reflète des poids décidés avant l'expérience."
+  ]
+}

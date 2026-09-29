@@ -5,7 +5,7 @@ install:
 	.venv/bin/python -m pip install -e ".[dev]"
 
 test:
-	.venv/bin/python -m pytest --cov=minuteguard --cov-report=term-missing
+	.venv/bin/python -m pytest --cov=minuteguard --cov-report=term-missing --cov-fail-under=90
 
 lint:
 	.venv/bin/python -m ruff check .
@@ -16,4 +16,3 @@ demo:
 
 evaluate:
 	.venv/bin/minuteguard evaluate --predictions data/fixture_predictions.json --output outputs/runs/evaluation.json
-

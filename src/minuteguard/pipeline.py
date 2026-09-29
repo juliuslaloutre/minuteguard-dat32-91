@@ -33,12 +33,12 @@ def _dedupe(items: list[ItemT], *, attribute: str) -> list[ItemT]:
 def _renumber(
     decisions: list[Decision], actions: list[Action], risks: list[Risk]
 ) -> tuple[list[Decision], list[Action], list[Risk]]:
-    for index, item in enumerate(decisions, start=1):
-        item.id = f"D{index}"
-    for index, item in enumerate(actions, start=1):
-        item.id = f"A{index}"
-    for index, item in enumerate(risks, start=1):
-        item.id = f"R{index}"
+    for index, decision in enumerate(decisions, start=1):
+        decision.id = f"D{index}"
+    for index, action in enumerate(actions, start=1):
+        action.id = f"A{index}"
+    for index, risk in enumerate(risks, start=1):
+        risk.id = f"R{index}"
     return decisions, actions, risks
 
 

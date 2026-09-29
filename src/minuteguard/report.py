@@ -22,13 +22,13 @@ def render_markdown(envelope: AuditEnvelope) -> str:
         "",
     ]
     if audit.decisions:
-        for item in audit.decisions:
+        for decision in audit.decisions:
             lines.extend(
                 [
-                    f"- **{item.id} — {_safe(item.statement)}** "
-                    f"(owner : {_safe(item.owner)}, confiance : {item.confidence})",
-                    f"  - Preuve L{item.evidence.line_start}-L{item.evidence.line_end} : "
-                    f'“{_safe(item.evidence.quote)}”',
+                    f"- **{decision.id} — {_safe(decision.statement)}** "
+                    f"(owner : {_safe(decision.owner)}, confiance : {decision.confidence})",
+                    f"  - Preuve L{decision.evidence.line_start}-L{decision.evidence.line_end} : "
+                    f'“{_safe(decision.evidence.quote)}”',
                 ]
             )
     else:
@@ -43,23 +43,23 @@ def render_markdown(envelope: AuditEnvelope) -> str:
             "|---|---|---|---|---|",
         ]
     )
-    for item in audit.actions:
+    for action in audit.actions:
         lines.append(
-            f"| {item.id} | {_safe(item.task)} | {_safe(item.owner)} | "
-            f"{_safe(item.due_date)} | {item.status} |"
+            f"| {action.id} | {_safe(action.task)} | {_safe(action.owner)} | "
+            f"{_safe(action.due_date)} | {action.status} |"
         )
         lines.append(
-            f"\nPreuve {item.id}, L{item.evidence.line_start}-L{item.evidence.line_end} : "
-            f'“{_safe(item.evidence.quote)}”'
+            f"\nPreuve {action.id}, L{action.evidence.line_start}-L{action.evidence.line_end} : "
+            f'“{_safe(action.evidence.quote)}”'
         )
 
     lines.extend(["", "## Risques", ""])
     if audit.risks:
-        for item in audit.risks:
+        for risk in audit.risks:
             lines.append(
-                f"- **{item.id} [{item.severity}]** {_safe(item.description)} — "
-                f'preuve L{item.evidence.line_start}-L{item.evidence.line_end} : '
-                f'“{_safe(item.evidence.quote)}”'
+                f"- **{risk.id} [{risk.severity}]** {_safe(risk.description)} — "
+                f'preuve L{risk.evidence.line_start}-L{risk.evidence.line_end} : '
+                f'“{_safe(risk.evidence.quote)}”'
             )
     else:
         lines.append("Aucun risque explicite suffisamment prouvé.")

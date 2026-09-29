@@ -6,11 +6,13 @@ import argparse
 import json
 import os
 import sys
+from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
 from pydantic import ValidationError
 
+from minuteguard.evaluation import evaluate_predictions
 from minuteguard.failures import failure_catalog
 from minuteguard.pipeline import MeetingAuditor
 from minuteguard.prompts import VALID_VARIANTS
@@ -92,6 +94,53 @@ def _show_failure_lab(args: argparse.Namespace) -> int:
     return 0
 
 
+def _run_evaluation(args: argparse.Namespace) -> int:
+    cases = _read_json(args.cases)
+    predictions = _read_json(args.predictions)
+    if not isinstance(cases, list) or not isinstance(predictions, dict):
+        raise ValueError("Invalid evaluation file shape")
+    report = evaluate_predictions(cases, predictions)
+    _write_text(args.output, json.dumps(report, ensure_ascii=False, indent=2) + "\n")
+    metrics = report["metrics"]
+    print(f"Rapport d'évaluation écrit dans {args.output}")
+    print(
+        f"Score composite={metrics['composite_score']:.4f} | "
+        f"actions F1={metrics['actions']['f1']:.4f} | "
+        f"ancrage={metrics['evidence_grounding_rate']:.4f}"
+    )
+    return 0
+
+
+def _run_benchmark(args: argparse.Namespace) -> int:
+    cases = _read_json(args.cases)
+    if not isinstance(cases, list):
+        raise ValueError("The cases file must contain a JSON list")
+    provider = _provider_from_args(args)
+    auditor = MeetingAuditor(provider, prompt_variant=args.variant)
+    predictions: list[dict[str, Any]] = []
+    for case in cases:
+        envelope = auditor.audit(str(case["text"]), title=str(case["title"]))
+        predictions.append(
+            {
+                "case_id": str(case["id"]),
+                "audit": envelope.audit.model_dump(mode="json"),
+                "rejected_items": envelope.rejected_items,
+            }
+        )
+    bundle = {
+        "metadata": {
+            "provider": provider.provider_name,
+            "model": provider.model_name,
+            "prompt_variant": args.variant,
+            "generated_at": datetime.now(UTC).isoformat(),
+        },
+        "predictions": predictions,
+    }
+    _write_text(args.output, json.dumps(bundle, ensure_ascii=False, indent=2) + "\n")
+    print(f"Prédictions écrites dans {args.output}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="minuteguard",
@@ -127,6 +176,39 @@ def build_parser() -> argparse.ArgumentParser:
     )
     failures.add_argument("--json", action="store_true")
     failures.set_defaults(handler=_show_failure_lab)
+
+    evaluate = subparsers.add_parser("evaluate", help="Évaluer un fichier de prédictions")
+    evaluate.add_argument(
+        "--cases", type=Path, default=PROJECT_ROOT / "data" / "eval_cases.json"
+    )
+    evaluate.add_argument(
+        "--predictions",
+        type=Path,
+        default=PROJECT_ROOT / "data" / "fixture_predictions.json",
+    )
+    evaluate.add_argument("--output", type=Path, default=Path("outputs/runs/evaluation.json"))
+    evaluate.set_defaults(handler=_run_evaluation)
+
+    benchmark = subparsers.add_parser(
+        "benchmark", help="Générer des prédictions sur le jeu d'évaluation"
+    )
+    benchmark.add_argument(
+        "--cases", type=Path, default=PROJECT_ROOT / "data" / "eval_cases.json"
+    )
+    benchmark.add_argument("--provider", choices=("fixture", "openai"), default="openai")
+    benchmark.add_argument(
+        "--fixture",
+        type=Path,
+        default=PROJECT_ROOT / "data" / "fixture_response.json",
+    )
+    benchmark.add_argument(
+        "--model", default=os.environ.get("MINUTEGUARD_MODEL", "gpt-4o-mini")
+    )
+    benchmark.add_argument("--variant", choices=VALID_VARIANTS, default="few_shot")
+    benchmark.add_argument(
+        "--output", type=Path, default=Path("outputs/runs/predictions.json")
+    )
+    benchmark.set_defaults(handler=_run_benchmark)
     return parser
 
 
@@ -142,4 +224,3 @@ def main(argv: list[str] | None = None) -> int:
 
 if __name__ == "__main__":  # pragma: no cover
     raise SystemExit(main())
-

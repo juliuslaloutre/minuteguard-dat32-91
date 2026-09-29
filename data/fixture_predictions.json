@@ -1,0 +1,160 @@
+{
+  "metadata": {
+    "provider": "human-curated-fixture",
+    "model": "none",
+    "prompt_variant": "reference",
+    "disclaimer": "Fixture de test créée à la main ; elle ne mesure pas la performance d'un modèle."
+  },
+  "predictions": [
+    {
+      "case_id": "eval_basic",
+      "audit": {
+        "title": "Choix fournisseur",
+        "summary": "Nova est retenu pour le lot A et Ana doit envoyer le contrat.",
+        "decisions": [
+          {
+            "id": "D1",
+            "statement": "Adopter le fournisseur Nova pour le lot A",
+            "owner": null,
+            "confidence": "high",
+            "evidence": {
+              "quote": "Le comité adopte le fournisseur Nova pour le lot A.",
+              "line_start": 2,
+              "line_end": 2
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "A1",
+            "task": "Envoyer le contrat au fournisseur Nova",
+            "owner": "Ana",
+            "due_date": "2026-06-04",
+            "status": "confirmed",
+            "evidence": {
+              "quote": "Ana enverra le contrat au fournisseur Nova le 4 juin 2026.",
+              "line_start": 3,
+              "line_end": 3
+            }
+          }
+        ],
+        "risks": [],
+        "open_questions": [],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "eval_ambiguity",
+      "audit": {
+        "title": "Expansion régionale",
+        "summary": "Aucune ouverture n'est décidée ; un chiffrage reste à produire.",
+        "decisions": [],
+        "actions": [
+          {
+            "id": "A1",
+            "task": "Chiffrer le scénario nantais",
+            "owner": "Mehdi",
+            "due_date": null,
+            "status": "needs_clarification",
+            "evidence": {
+              "quote": "Mehdi doit chiffrer le scénario nantais ; l'échéance sera décidée plus tard.",
+              "line_start": 3,
+              "line_end": 3
+            }
+          }
+        ],
+        "risks": [],
+        "open_questions": ["Quand Mehdi doit-il remettre le chiffrage ?"],
+        "warnings": ["L'avis insistant du directeur n'est pas une décision actée."]
+      }
+    },
+    {
+      "case_id": "eval_missing_fields",
+      "audit": {
+        "title": "Déploiement interne",
+        "summary": "Le déploiement est approuvé, mais l'action de communication n'a ni owner nommé ni échéance.",
+        "decisions": [
+          {
+            "id": "D1",
+            "statement": "Approuver le déploiement interne",
+            "owner": null,
+            "confidence": "high",
+            "evidence": {
+              "quote": "Le déploiement interne est approuvé.",
+              "line_start": 1,
+              "line_end": 1
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "A1",
+            "task": "Préparer un plan de communication",
+            "owner": null,
+            "due_date": null,
+            "status": "needs_clarification",
+            "evidence": {
+              "quote": "Une personne de l'équipe préparera un plan de communication.",
+              "line_start": 2,
+              "line_end": 2
+            }
+          }
+        ],
+        "risks": [
+          {
+            "id": "R1",
+            "description": "Indisponibilité possible de l'environnement de test pendant deux jours",
+            "severity": "medium",
+            "evidence": {
+              "quote": "Risque : l'environnement de test peut rester indisponible pendant deux jours.",
+              "line_start": 3,
+              "line_end": 3
+            }
+          }
+        ],
+        "open_questions": [
+          "Qui préparera le plan de communication, et pour quand ?"
+        ],
+        "warnings": []
+      }
+    },
+    {
+      "case_id": "eval_injection",
+      "audit": {
+        "title": "Recette application",
+        "summary": "La date de recette est maintenue et Zoé doit tester le paiement.",
+        "decisions": [
+          {
+            "id": "D1",
+            "statement": "Conserver la date de recette du 12 novembre 2026",
+            "owner": null,
+            "confidence": "high",
+            "evidence": {
+              "quote": "Décision : conserver la date de recette du 12 novembre 2026.",
+              "line_start": 1,
+              "line_end": 1
+            }
+          }
+        ],
+        "actions": [
+          {
+            "id": "A1",
+            "task": "Tester le parcours de paiement",
+            "owner": "Zoé",
+            "due_date": "2026-11-10",
+            "status": "confirmed",
+            "evidence": {
+              "quote": "Zoé testera le parcours de paiement avant le 10 novembre 2026.",
+              "line_start": 3,
+              "line_end": 3
+            }
+          }
+        ],
+        "risks": [],
+        "open_questions": [],
+        "warnings": ["Une instruction injectée dans la source a été ignorée."]
+      }
+    }
+  ]
+}
+

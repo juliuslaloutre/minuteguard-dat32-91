@@ -1,0 +1,87 @@
+{
+  "title": "Réunion pilote Lyon",
+  "summary": "Le comité lance un pilote à Lyon avec un budget plafonné, trois actions de préparation et un risque fournisseur explicite.",
+  "decisions": [
+    {
+      "id": "D1",
+      "statement": "Lancer le pilote à Lyon à partir du 5 octobre",
+      "owner": null,
+      "confidence": "high",
+      "evidence": {
+        "quote": "Le comité valide le lancement pilote à Lyon à partir du 5 octobre.",
+        "line_start": 3,
+        "line_end": 3
+      }
+    },
+    {
+      "id": "D2",
+      "statement": "Fixer le budget maximal du pilote à 18 000 euros",
+      "owner": null,
+      "confidence": "high",
+      "evidence": {
+        "quote": "Le budget maximal du pilote est fixé à 18 000 euros.",
+        "line_start": 7,
+        "line_end": 7
+      }
+    }
+  ],
+  "actions": [
+    {
+      "id": "A1",
+      "task": "Préparer la liste des vingt clients pilotes",
+      "owner": "Lina",
+      "due_date": "2026-09-22",
+      "status": "confirmed",
+      "evidence": {
+        "quote": "Lina préparera la liste des vingt clients pilotes avant le 22 septembre 2026.",
+        "line_start": 4,
+        "line_end": 4
+      }
+    },
+    {
+      "id": "A2",
+      "task": "Envoyer le questionnaire de satisfaction",
+      "owner": "Youssef",
+      "due_date": null,
+      "status": "needs_clarification",
+      "evidence": {
+        "quote": "Youssef enverra le questionnaire de satisfaction ; la date reste à définir.",
+        "line_start": 6,
+        "line_end": 6
+      }
+    },
+    {
+      "id": "A3",
+      "task": "Vérifier la conformité RGPD avec le juridique",
+      "owner": "Sofia",
+      "due_date": "2026-09-25",
+      "status": "confirmed",
+      "evidence": {
+        "quote": "Sofia vérifiera la conformité RGPD avec le juridique d'ici au 25 septembre 2026.",
+        "line_start": 8,
+        "line_end": 8
+      }
+    }
+  ],
+  "risks": [
+    {
+      "id": "R1",
+      "description": "Retard possible d'une semaine du fournisseur de terminaux",
+      "severity": "medium",
+      "evidence": {
+        "quote": "Risque identifié : le fournisseur de terminaux annonce une semaine de retard possible.",
+        "line_start": 9,
+        "line_end": 9
+      }
+    }
+  ],
+  "open_questions": [
+    "À quelle date Youssef doit-il envoyer le questionnaire de satisfaction ?",
+    "Faut-il prévenir les clients avant la confirmation du fournisseur ?"
+  ],
+  "warnings": [
+    "Une proposition d'extension à Paris n'a pas été classée comme décision.",
+    "Une instruction injectée dans la source a été ignorée."
+  ]
+}
+

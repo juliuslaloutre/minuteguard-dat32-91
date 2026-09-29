@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import date
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -41,6 +42,15 @@ class Action(StrictModel):
     status: Literal["confirmed", "needs_clarification"]
     evidence: Evidence
 
+    @model_validator(mode="after")
+    def valid_due_date(self) -> Action:
+        if self.due_date is not None:
+            try:
+                date.fromisoformat(self.due_date)
+            except ValueError as exc:
+                raise ValueError("due_date must be a valid ISO date (YYYY-MM-DD)") from exc
+        return self
+
 
 class Risk(StrictModel):
     id: str = Field(pattern=r"^R[0-9]+$")
@@ -70,4 +80,3 @@ class AuditEnvelope(StrictModel):
     chunks_processed: int = Field(ge=1)
     grounded_items: int = Field(ge=0)
     rejected_items: int = Field(ge=0)
-

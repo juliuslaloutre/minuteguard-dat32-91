@@ -39,18 +39,16 @@ def render_markdown(envelope: AuditEnvelope) -> str:
             "",
             "## Actions",
             "",
-            "| ID | Action | Responsable | Échéance | Statut |",
-            "|---|---|---|---|---|",
+            "| ID | Action | Responsable | Échéance | Statut | Preuve |",
+            "|---|---|---|---|---|---|",
         ]
     )
     for action in audit.actions:
         lines.append(
             f"| {action.id} | {_safe(action.task)} | {_safe(action.owner)} | "
-            f"{_safe(action.due_date)} | {action.status} |"
-        )
-        lines.append(
-            f"\nPreuve {action.id}, L{action.evidence.line_start}-L{action.evidence.line_end} : "
-            f'“{_safe(action.evidence.quote)}”'
+            f"{_safe(action.due_date)} | {action.status} | "
+            f"L{action.evidence.line_start}-L{action.evidence.line_end} : "
+            f'“{_safe(action.evidence.quote)}” |'
         )
 
     lines.extend(["", "## Risques", ""])
